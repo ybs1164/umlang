@@ -7,11 +7,14 @@
 void um_compile(char* src) {
     lexer_T* lexer = init_lexer(src);
     parser_T* parser = init_parser(lexer);
-    AST_T* root = parser_parse(parser);
-    printf("%p\n", root);
-    token_T* um = 0;
-    while ((um = lexer_next_token(lexer))->type != TOKEN_EOF) {
+    // AST_T* root = parser_parse(parser);
+    // printf("%p\n", root);
+    token_T* um = parser->token;
+    while (1) {
         printf("%s\n", token_to_str(um));
+        um = lexer_next_token(lexer);
+        if (um->type == TOKEN_EOF)
+            break;
     }
 }
 

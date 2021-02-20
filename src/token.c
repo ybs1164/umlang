@@ -19,10 +19,8 @@ const char* token_type_to_str(int type) {
         case  TOKEN_RBRACE: return "TOKEN_RBRACE";
         case  TOKEN_COLON: return "TOKEN_COLON";
         case  TOKEN_COMMA: return "TOKEN_COMMA";
-        case  TOKEN_FUNC: return "TOKEN_FUNC";
         case  TOKEN_LT: return "TOKEN_LT";
         case  TOKEN_GT: return "TOKEN_GT";
-        case  TOEKN_RIGHT_ARROW: return "TOKEN_RIGHT_ARROW";
         case  TOKEN_INT: return "TOKEN_INT";
         case  TOKEN_SEMI: return "TOKEN_SEMI";
         case  TOKEN_EOF: return "TOKEN_EOF";
