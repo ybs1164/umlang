@@ -24,11 +24,12 @@ void lexer_advance(lexer_T* lexer) {
 char lexer_peek(lexer_T* lexer, int offset) {
     return lexer->src[MIN(lexer->i + offset, lexer->src_size)];
 }
-
+/*
 token_T* lexer_advance_with(lexer_T* lexer, token_T* token) {
     // lexer_advance(lexer);
     return token;
 }
+*/
 
 token_T* lexer_advance_current(lexer_T* lexer, int type) {
     char* value = calloc(2, sizeof(char));
@@ -75,10 +76,10 @@ token_T* lexer_next_token(lexer_T* lexer) {
         lexer_skip_whitespace(lexer);
 
         if (lexer->c & 0x80)
-            return lexer_advance_with(lexer, lexer_parse_id(lexer));
+            return lexer_parse_id(lexer);
 
         if (isdigit(lexer->c))
-            return lexer_advance_with(lexer, lexer_parse_number(lexer));
+            return exer_parse_number(lexer);
 
         switch (lexer->c) {
             case '=': return lexer_advance_current(lexer, TOKEN_EQUALS);
