@@ -23,7 +23,7 @@ token_T* parser_eat(parser_T* parser, int type) {
 
     return parser->token;
 }
-
+/*
 AST_T* parser_parse(parser_T* parser) {
     return parser_parse_compound(parser);
 }
@@ -117,9 +117,18 @@ AST_T* parser_parse_compound(parser_T* parser) {
     AST_T* compound = init_ast(AST_COMPOUND);
 
     while (parser->token->type != TOKEN_EOF) {
+<<<<<<< Updated upstream
         list_push(compound->children, parser_parse_expr(parser));
 
     }
 
     return compound;
 }
+=======
+        AST_T* child = parser_parse(parser);
+    }
+
+    return init_ast(AST_NOOP);
+}
+*/
+>>>>>>> Stashed changes
