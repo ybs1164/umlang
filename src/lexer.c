@@ -49,20 +49,11 @@ void lexer_skip_whitespace(lexer_T* lexer) {
 
 token_T* lexer_parse_id(lexer_T* lexer) {
     char* value = calloc(1, sizeof(char));
-<<<<<<< Updated upstream
 
     while (lexer->c & 0x80) {
         value = realloc(value, (strlen(value) + 2) * sizeof(char));
         strcat(value, (char[]){lexer->c,0});
         lexer_advance(lexer);
-=======
-    while (lexer->c & 0x80) {
-        for (int i=0;i<3;i++){
-            value = realloc(value, (strlen(value) + 2) * sizeof(char));
-            strcat(value, (char[]){lexer->c, 0});
-            lexer_advance(lexer);
-        }
->>>>>>> Stashed changes
     }
 
     return init_token(value, TOKEN_ID);
@@ -85,11 +76,7 @@ token_T* lexer_next_token(lexer_T* lexer) {
         lexer_skip_whitespace(lexer);
 
         if (lexer->c & 0x80)
-<<<<<<< Updated upstream
             return lexer_parse_id(lexer);
-=======
-            return lexer_advance_with(lexer, lexer_parse_id(lexer));
->>>>>>> Stashed changes
 
         if (isdigit(lexer->c))
             return exer_parse_number(lexer);
