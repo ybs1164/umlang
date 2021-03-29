@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+// 어휘 분석기 (lexer) 생성 [코드 문자열 하나를 받는다.]
 lexer_T* init_lexer(char* src) {
     lexer_T* lexer = calloc(1, sizeof(struct LEXER_STRUCT));
     lexer->src = src;
@@ -14,23 +15,13 @@ lexer_T* init_lexer(char* src) {
     return lexer;
 }
 
-void lexer_advance(lexer_T* lexer) {
-    if (lexer->i < lexer->src_size && lexer->c != '\0') {
-        lexer->i += 1;
-        lexer->c = lexer->src[lexer->i];
-    }
+// 공백 문자 스킵
+void lexer_skip_whitespace(lexer_T* lexer) {
+    while (lexer->c == 13 || lexer->c == 10 || lexer->c == ' ' || lexer->c == '/t')
+        lexer_advance(lexer);
 }
 
-char lexer_peek(lexer_T* lexer, int offset) {
-    return lexer->src[MIN(lexer->i + offset, lexer->src_size)];
-}
-/*
-token_T* lexer_advance_with(lexer_T* lexer, token_T* token) {
-    // lexer_advance(lexer);
-    return token;
-}
-*/
-
+// 단일 문자를 읽어준다.
 token_T* lexer_advance_current(lexer_T* lexer, int type) {
     char* value = calloc(2, sizeof(char));
     value[0] = lexer->c;
@@ -42,11 +33,7 @@ token_T* lexer_advance_current(lexer_T* lexer, int type) {
     return token;
 }
 
-void lexer_skip_whitespace(lexer_T* lexer) {
-    while (lexer->c == 13 || lexer->c == 10 || lexer->c == ' ' || lexer->c == '/t')
-        lexer_advance(lexer);
-}
-
+// 한글 문자열 (id) 를 읽어주는 역할을 한다.
 token_T* lexer_parse_id(lexer_T* lexer) {
     char* value = calloc(1, sizeof(char));
 
@@ -59,6 +46,7 @@ token_T* lexer_parse_id(lexer_T* lexer) {
     return init_token(value, TOKEN_ID);
 }
 
+// 숫자 문자열 (number) 를 읽어주는 역할을 한다.
 token_T* lexer_parse_number(lexer_T* lexer) {
     char* value = calloc(1, sizeof(char));
 
@@ -68,19 +56,24 @@ token_T* lexer_parse_number(lexer_T* lexer) {
         lexer_advance(lexer);
     }
 
-    return init_token(value, TOKEN_INT);
+    return init_token(value, VALUE_INT);
 }
 
+// 어휘 분석기 (lexer) 에서 토큰을 하나 단위로 읽어주는 역할을 함.
 token_T* lexer_next_token(lexer_T* lexer) {
     while (lexer->c != '\0') {
         lexer_skip_whitespace(lexer);
 
+        // 한글 문자열은 id 로 처리한다.
         if (lexer->c & 0x80)
             return lexer_parse_id(lexer);
 
+        // 숫자는 number 로 처리한다. (실수 처리도 유한 오토마타 활용해서 구현해야 함)
         if (isdigit(lexer->c))
-            return exer_parse_number(lexer);
+            return lexer_parse_number(lexer);
 
+
+        // 남은 단일 문자열들을 체크한다.
         switch (lexer->c) {
             case '=': return lexer_advance_current(lexer, TOKEN_EQUALS);
             case '(': return lexer_advance_current(lexer, TOKEN_LPAREN);
@@ -89,6 +82,10 @@ token_T* lexer_next_token(lexer_T* lexer) {
             case '}': return lexer_advance_current(lexer, TOKEN_RBRACE);
             case ':': return lexer_advance_current(lexer, TOKEN_COLON);
             case ',': return lexer_advance_current(lexer, TOKEN_COMMA);
+            case '+': return lexer_advance_current(lexer, OP_ADD);
+            case '-': return lexer_advance_current(lexer, OP_SUB);
+            case '*': return lexer_advance_current(lexer, OP_MUL);
+            case '/': return lexer_advance_current(lexer, OP_DIV);
             case ';': return lexer_advance_current(lexer, TOKEN_SEMI);
             case '\0': break;
             default: printf("[구문 분석]: 알 수 없는 문자 '%d'\n", lexer->c); exit(1); break;

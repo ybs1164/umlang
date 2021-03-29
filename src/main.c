@@ -8,6 +8,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // 파일 컴파일 시작
     um_compile_file(argv[1]);
 
     return 0;

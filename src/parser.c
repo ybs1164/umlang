@@ -8,7 +8,7 @@ parser_T* init_parser(lexer_T* lexer) {
     parser_T* parser = calloc(1, sizeof(struct PARSER_STRUCT));
 
     parser->lexer = lexer;
-    parser->token = lexer_next_token(lexer);
+    //parser->token = lexer_next_token(lexer);
 
     return parser;
 }
@@ -23,7 +23,7 @@ token_T* parser_eat(parser_T* parser, int type) {
 
     return parser->token;
 }
-/*
+
 AST_T* parser_parse(parser_T* parser) {
     return parser_parse_compound(parser);
 }
@@ -31,10 +31,10 @@ AST_T* parser_parse(parser_T* parser) {
 AST_T* parser_parse_id(parser_T* parser) { 
     char* value = calloc(strlen(parser->token->value) + 1, sizeof(char));
     strcpy(value, parser->token->value);
-    parser_eat(parser, TOKEN_ID);
+    parser_eat(parser, TOKEN_ID); // id 값 먹고
 
     if (parser->token->type == TOKEN_EQUALS) {
-        parser_eat(parser, TOKEN_EQUALS);
+        parser_eat(parser, TOKEN_EQUALS); // 등호가 있으면 등호 먹고 반환
         AST_T* ast = init_ast(AST_ASSIGNMENT);
         ast->name = value;
         // printf("-->%s\n", value);
@@ -48,21 +48,8 @@ AST_T* parser_parse_id(parser_T* parser) {
         parser_eat(parser, TOKEN_COLON);
 
         while (parser->token->type == TOKEN_ID) {
-            ast->data_type = typename_to_int(parser->token->type);
+            ast->data_type = parser->token->type;
             parser_eat(parser, TOKEN_ID);
-
-            if (parser->token->type == TOKEN_LT) {
-                parser_eat(parser, TOKEN_LT);
-
-                ast->data_type += typename_to_int(parser->token->type);
-                parser_eat(parser, TOKEN_ID);
-
-                // printf("%s\n", token_to_str(parser->token));
-
-                parser_eat(parser, TOKEN_GT);
-
-                // printf("helo\n");
-            }
         }
     }
 
@@ -88,17 +75,8 @@ AST_T* parser_parse_list(parser_T* parser) {
         parser_eat(parser, TOKEN_COLON);
 
         while (parser->token->type == TOKEN_ID) {
-            ast->data_type = typename_to_int(parser->token->type);
+            ast->data_type = parser->token->type;
             parser_eat(parser, TOKEN_ID);
-
-            if (parser->token->type == TOKEN_LT) {
-                parser_eat(parser, TOKEN_LT);
-
-                ast->data_type += typename_to_int(parser->token->type);
-                parser_eat(parser, TOKEN_ID);
-
-                parser_eat(parser, TOKEN_GT);
-            }
         }
     }
 
@@ -117,18 +95,9 @@ AST_T* parser_parse_compound(parser_T* parser) {
     AST_T* compound = init_ast(AST_COMPOUND);
 
     while (parser->token->type != TOKEN_EOF) {
-<<<<<<< Updated upstream
         list_push(compound->children, parser_parse_expr(parser));
 
     }
 
     return compound;
 }
-=======
-        AST_T* child = parser_parse(parser);
-    }
-
-    return init_ast(AST_NOOP);
-}
-*/
->>>>>>> Stashed changes

@@ -4,7 +4,9 @@
 typedef struct TOKEN_STRUCT {
     char* value;
     enum {
+        TOKEN_EOF,
         TOKEN_ID,
+        TOKEN_SEMI,
         TOKEN_EQUALS,
         TOKEN_LPAREN,
         TOKEN_RPAREN,
@@ -12,11 +14,20 @@ typedef struct TOKEN_STRUCT {
         TOKEN_RBRACE,
         TOKEN_COLON,
         TOKEN_COMMA,
-        TOKEN_LT,
-        TOKEN_GT,
-        TOKEN_INT,
-        TOKEN_SEMI,
-        TOKEN_EOF,
+        VALUE_BOOL,
+        VALUE_INT,
+        VALUE_FLOAT,
+        VALUE_STR,
+        OP_ADD,
+        OP_SUB,
+        OP_MUL,
+        OP_DIV,
+        KEYWORD_IF, // 음
+        KEYWORD_ELSE, // 아님
+        KEYWORD_FOR, // 반복
+        KEYWORD_FUNC, // 함
+        KEYWORD_RETURN, // 반환
+        KEYWORD_INT, // 정수
     } type;
 } token_T;
 
