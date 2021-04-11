@@ -14,6 +14,7 @@ typedef struct TOKEN_STRUCT {
         TOKEN_RBRACE,
         TOKEN_COLON,
         TOKEN_COMMA,
+        TOKEN_DOT,
         VALUE_BOOL,
         VALUE_INT,
         VALUE_FLOAT,
@@ -22,11 +23,19 @@ typedef struct TOKEN_STRUCT {
         OP_SUB,
         OP_MUL,
         OP_DIV,
+        OP_LS, // <
+        OP_LSEQ, // <=
+        OP_GT, // >
+        OP_GTEQ, // >=
         KEYWORD_IF, // 음
         KEYWORD_ELSE, // 아님
         KEYWORD_FOR, // 반복
         KEYWORD_FUNC, // 함
-        KEYWORD_RETURN, // 반환
+        KEYWORD_TYPE, // 형
+        KEYWORD_BREAK, // 나감 [반환과 똑같은 역할을 할 것]
+        KEYWORD_OBJECT, // 객체
+        KEYWORD_IMPORT, //
+        KEYWORD_EXPORT, // 
         KEYWORD_INT, // 정수
     } type;
 } token_T;
